@@ -1,0 +1,173 @@
+{
+  "start": {
+    "title": "SCÈNE 1 — LA DÉCOUVERTE",
+    "image_prompt": "Thomas_Bureau",
+    "text": "Le graphique est apparu à 14h37.<br/><br/>Pas une alerte — rien qui clignote, rien qui sonne. Juste une courbe qui s'écarte de son couloir de tolérance sur le secteur nord-est, légèrement, de façon continue depuis dix-huit mois. Le genre d'écart qu'on remarque si on cherche, qu'on ignore si on ne cherche pas.<br/><br/>Thomas cherchait autre chose. Il a fait défiler l'écran, s'est arrêté, est remonté. Il a isolé la variable, changé l'échelle temporelle, croisé avec les données de charge saisonnière. L'écart tenait. Il a croisé avec les relevés de maintenance. Il tenait encore. Il a ouvert un second terminal. Autre méthode, mêmes données. Même résultat.",
+    "choices": [
+      {
+        "label": "Continuer l'analyse",
+        "next_node": "scene1_part2",
+        "impact": {}
+      }
+    ]
+  },
+  "scene1_part2": {
+    "title": "SCÈNE 1 — L'ATTENTE",
+    "image_prompt": "Thomas_Bureau",
+    "text": "Il s'est rapproché de l'écran sans s'en rendre compte, les avant-bras posés sur le bureau, les mains immobiles de part et d'autre du clavier. Chez lui, la concentration ne produisait pas d'agitation mais l'inverse. Moins il était sûr, moins il bougeait.<br/><br/>Vu de loin, on aurait pu croire à quelqu'un qui vérifiait une anomalie mineure de plus dans une journée de bureau ordinaire. De près, il y avait autre chose — cette fixité trop complète, ce visage fermé non par l'émotion mais par le calcul, comme s'il attendait des données qu'elles lui disent elles-mêmes à partir de quel moment elles cessaient d'être discutables.<br/><br/>Il a fermé les deux fenêtres. Il les a rouvertes. Il savait ce qu'il allait trouver — il les a rouvertes quand même, parce que c'est ce qu'on fait quand on espère encore que la troisième lecture produira quelque chose de différent.",
+    "choices": [
+      {
+        "label": "Analyser la forme",
+        "next_node": "scene1_part3",
+        "impact": {}
+      }
+    ]
+  },
+  "scene1_part3": {
+    "title": "SCÈNE 1 — LA PENTE",
+    "image_prompt": "Thomas_Reflexion",
+    "text": "Elle n'en a pas produit. Ce n'était pas le chiffre. Le chiffre était dans la marge — techniquement défendable, le genre de donnée qu'un comité de pilotage peut regarder vingt minutes et décider de surveiller sans agir. Ce qui posait problème c'était la forme.<br/><br/><span class='font-bold text-gray-900'>Pas un pic. Une pente.</span> Lente, régulière, dix-huit mois dans une seule direction.<br/><br/>Les pics ont des causes. On les trouve, on les traite, on passe à autre chose. Les pentes ont des logiques — et les logiques des pentes ne s'inversent pas sur décision. Thomas connaissait la différence depuis longtemps. Pas comme une leçon théorique apprise dans un manuel de supervision, mais comme quelque chose de plus usé, de plus concret. Il avait déjà vu des gens très compétents regarder une dérive lente avec un sérieux sincère et pourtant la ranger, faute de mieux, dans la catégorie rassurante des problèmes encore réversibles.",
+    "choices": [
+      {
+        "label": "Le silence des données",
+        "next_node": "scene1_part4",
+        "impact": {}
+      }
+    ]
+  },
+  "scene1_part4": {
+    "title": "SCÈNE 1 — L'ANGLE MORT",
+    "image_prompt": "Thomas_Reflexion",
+    "text": "On ne niait pas les chiffres. On discutait leur portée. On gagnait quelques heures comme ça, parfois quelques jours. Le temps de faire passer une pente pour une variation, puis une variation pour un contexte, puis un contexte pour un sujet à suivre au prochain point. Parfois cela suffisait. Parfois non.<br/><br/>Dix-huit mois. Il n'avait pas vu la courbe il y a dix-huit mois. Personne ne la lui avait signalée. Elle avait existé sans lui dans les données, s'était développée dans les serveurs, avait traversé des réunions de coordination et des rapports trimestriels sans déclencher ce qu'elle aurait dû déclencher. Et maintenant il était là, un mardi de mars à 15h04, à découvrir une histoire déjà ancienne.<br/><br/>Il a regardé l'heure : 15h12. Trente-cinq minutes s'étaient écoulées depuis qu'il avait ouvert le fichier. Il ne les avait pas senties passer. Autour de lui l'open space continuait — claviers, conversations basses, quelqu'un qui riait près de la machine à café, une chaise qu'on repousse, le vibreur d'un téléphone posé sur un plateau.",
+    "choices": [
+      {
+        "label": "Sécuriser l'information",
+        "next_node": "scene1_part5",
+        "impact": { "preparation": 5, "discretion": -5 }
+      }
+    ]
+  },
+  "scene1_part5": {
+    "title": "SCÈNE 1 — NW-7",
+    "image_prompt": "Thomas_Bureau",
+    "text": "Ce bruit familier qu'il n'entendait plus depuis des années, il l'entendait maintenant avec une netteté bizarre, comme si quelque chose s'était légèrement déplacé entre lui et le reste. Les autres continuaient leur après-midi de travail ; lui regardait une forme qui s'était installée depuis dix-huit mois sans demander la permission à personne.<br/><br/>Il a enregistré les captures. Il a créé un dossier dans son espace local — pas le serveur partagé, la partition chiffrée qu'il utilisait pour les dossiers sensibles en cours d'instruction. Le geste a précédé la pensée. Il a nommé le dossier <span class='font-bold'>NW-7</span>. Les deux lettres de sa fenêtre de bureau, le chiffre du mois. Il garderait ce nom.<br/><br/>Dehors, le périphérique, les immeubles de bureaux, le ciel gris de mars tassé au-dessus de la ville. Thomas regardait souvent le monde comme ça. La fragilité des systèmes complexes n'était pas pour lui une révélation. Ce qu'il n'avait jamais eu, c'était une courbe comme celle-là. Réelle, chiffrée, datée, sur un secteur qu'il connaissait : trois nœuds de distribution majeurs, deux millions d'abonnés directs, des hôpitaux, des centres de données. Pas une fragilité générale. Une fragilité localisée, déjà engagée.",
+    "choices": [
+      {
+        "label": "Appeler Samir (15h21)",
+        "next_node": "scene1_part6",
+        "impact": { "alerte": 5, "charge": 10 }
+      }
+    ]
+  },
+  "scene1_part6": {
+    "title": "SCÈNE 1 — LA DÉCISION",
+    "image_prompt": "Thomas_Telephone",
+    "text": "Il a pris son téléphone. Il a cherché le numéro de Samir. Samir Hadj travaillait à la direction technique du réseau de transport — un échelon au-dessus. Thomas respectait son jugement précisément parce que Samir ne cherchait jamais à rassurer. Quand il disait <i>ça tient</i>, ça tenait. Mais appeler Samir, c'était sortir la courbe de son écran pour la poser dans une conversation réelle. C'était la rendre un peu plus vraie qu'elle ne l'était déjà.<br/><br/>Il a posé le téléphone. Il a rouvert le fichier. Même résultat. Il a appelé à 15h21. Trois sonneries. Samir a décroché avec cette voix de quelqu'un en réunion qui sort dans le couloir.<br/><br/>— T'as cinq minutes ? a dit Thomas.<br/>— J'ai trois minutes. C'est quoi.<br/>— Pas au téléphone. Ce soir si possible.<br/><br/>Un silence court. Dans leur vocabulaire commun, <i>pas au téléphone</i> signifiait une chose précise. <br/>— Je finis à dix-neuf heures, a dit Samir. La Rotonde ?<br/>— La Rotonde.<br/><br/>Il a raccroché. L'heure et demie qui a suivi, Thomas l'a traversée en surface. À 18h45 il a fermé son ordinateur. Dans l'ascenseur, il pensait à la pente. Le fait qu'elle n'avait pas attendu qu'il la trouve pour continuer. Elle continuerait jusqu'à dix-neuf heures. Elle continuerait pendant qu'il parlerait à Samir.<br/><br/>Il a marché vers le métro avec le sentiment très net, très froid, qu'il se rendait à un rendez-vous où quelque chose allait cesser d'être seulement possible pour devenir partageable.",
+    "choices": [
+      {
+        "label": "Sortir de la station de métro (18h58)",
+        "next_node": "scene_bar",
+        "impact": { "charge": 5 },
+        "unlock_archive": "samir_dossier"
+      }
+    ]
+  },
+  
+ "scene_bar": {
+    "title": "SCÈNE 2 — LE BAR",
+    "image_prompt": "Thomas_Samir_Bar",
+    "text": "Dans le métro, il ne pense plus aux chiffres. Il pense à la décision qu'il est en train de prendre — pas demain, pas la semaine prochaine, maintenant, ce soir, en marchant vers un bar dont il sait déjà qu'il sera le lieu d'une conversation plus importante que n'importe quelle réunion de sa carrière.<br/><br/>Il arrive à 18h58.<br/><br/>La Rotonde — six minutes de la sortie, angle de rue, façade rouge sombre, lumière jaune qui rend tout le monde légèrement plus vieux. Il prend une table au fond, dos au mur, vue sur l'entrée. Une table d'homme qui attend quelque chose qu'il ne peut déjà plus décommander.<br/><br/>Il commande un café. Il ne le boira pas.<br/><br/>Son téléphone repose sur la table, écran éteint, face contre le bois. Il connaît déjà le fichier à l'intérieur. Il connaît les chiffres. Ce qu'il attend maintenant n'est plus une donnée supplémentaire mais un second regard.<br/><br/>Samir entre à 19h07.<br/><br/>Manteau sombre, sac d'ordinateur en bandoulière, l'air de quelqu'un qui a marché vite sans courir. Il repère Thomas immédiatement, lève deux doigts dans sa direction et vient s'asseoir en face de lui.<br/><br/>— Qu'est-ce qu'il y a ?<br/><br/><hr class='my-8 border-gray-200'/><p class='italic text-gray-600'>La courbe est là, dans le téléphone de Thomas, dans sa tête. Jusqu'à présent, il est le seul à porter le poids de cette découverte. Une fois l'information prononcée à voix haute, elle échappera à son contrôle.</p>",
+    "choices": [
+      {
+        "label": "A1 — La transparence absolue (Tout dire)",
+        "next_node": "bar_transparence",
+        "impact": {
+          "alerte": 30,
+          "charge": -20,
+          "integrite": 15
+        }
+      },
+      {
+        "label": "A2 — L'alerte mesurée (Dire l'essentiel)",
+        "next_node": "bar_essentiel",
+        "impact": {
+          "alerte": 20,
+          "charge": -5,
+          "integrite": 0
+        }
+      },
+      {
+        "label": "A3 — L'esquive calculée (Rester vague)",
+        "next_node": "bar_vague",
+        "impact": {
+          "alerte": 5,
+          "charge": 10,
+          "integrite": -10
+        }
+      },
+      {
+        "label": "A4 — Le repli (Minimiser l'anomalie)",
+        "next_node": "bar_minimiser",
+        "impact": {
+          "alerte": -10,
+          "charge": 25,
+          "integrite": -20
+        }
+      }
+    ]
+  },
+    "bar_transparence": {
+    "title": "A1 — Le partage",
+    "image_prompt": "Dessin_Courbe",
+    "text": "Thomas sort son carnet. D'abord la forme. Il trace un axe horizontal, un axe vertical, puis la ligne. Presque plate au début. Puis cette dérive lente, continue, assez régulière pour ne plus pouvoir être traitée comme un accident.<br/><br/>— Secteur nord-est, dit Thomas. Dix-huit mois. Dans la marge si tu prends le chiffre seul. Pas si tu regardes la pente. J'ai commencé par NW-7. Mais le problème n'est pas NW-7. Pas vraiment.<br/><br/>Samir le regarde :<br/>— Tu penses à quoi exactement ?<br/><br/>— À une logique de propagation. Cascade.",
+    "choices": [
+      {
+        "label": "Continuer vers la suite de la soirée",
+        "next_node": "paywall",
+        "impact": {}
+      }
+    ]
+  },
+  "bar_essentiel": {
+    "title": "A2 — La prudence",
+    "image_prompt": "Thomas_Samir_Bar",
+    "text": "Thomas partage le diagnostic général, mais garde la matière brute. Il donne assez pour être compris, pas assez pour être entièrement vérifiable sur-le-champ.<br/><br/>Samir baisse les yeux sur son expresso froid.<br/>— Il y a quelque chose que tu veux entendre ? Que ça tient. Et que ça ne tient pas encore assez pour qu'on alerte qui que ce soit d'autre.<br/><br/>Thomas ne répond pas immédiatement. La formulation de Samir est ouverte.<br/>— Oui.<br/>— Alors on est sur la même page, répond Samir.",
+    "choices": [
+      {
+        "label": "Continuer vers la suite de la soirée",
+        "next_node": "paywall",
+        "impact": {}
+      }
+    ]
+  },
+  "bar_vague": {
+    "title": "A3 — Le test",
+    "image_prompt": "Thomas_Samir_Bar",
+    "text": "Tu laisses passer une seconde de trop avant de répondre.<br/>— J'ai vu quelque chose d'inhabituel cet après-midi. Pas assez propre pour que je le formule déjà, mais assez pour ne pas avoir envie de rester seul avec.<br/><br/>Samir s'appuie au fond de sa chaise. <br/>— Donc tu veux quoi de moi, exactement ?<br/><br/>L'échange se refroidit. Tu as ouvert la porte, puis tu l'as laissée à peine entrebâillée. Samir l'a vu. Et toi aussi.",
+    "choices": [
+      {
+        "label": "Continuer vers la suite de la soirée",
+        "next_node": "paywall",
+        "impact": {}
+      }
+    ]
+  },
+  "bar_minimiser": {
+    "title": "A4 — Le déni",
+    "image_prompt": "Thomas_Bureau",
+    "text": "Tu poses la main sur ton carnet, sans l'ouvrir.<br/>— Pas grand-chose encore. Une dérive repérée cet après-midi. Un peu trop régulier pour être élégant, pas assez net pour mériter autre chose qu'une surveillance.<br/><br/>Samir croise les bras. Le silence qui suit n'est pas hostile. Il est plus précis que ça. Samir est en train de décider s'il te croit.<br/><br/>En remontant ton col dans le froid du boulevard, tu sens le soulagement d'avoir parlé moins franchement que tu n'aurais pu. C'est la forme la plus présentable du déni.",
+    "choices": [
+      {
+        "label": "Continuer vers la suite de la soirée",
+        "next_node": "paywall",
+        "impact": {}
+      }
+    ]
+  },
+  "paywall": {
+    "title": "Fin du chapitre gratuit",
+    "image_prompt": "None",
+    "text": "",
+    "choices": []
+  }
+}
