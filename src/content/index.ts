@@ -2,14 +2,14 @@ import type { NarrativeUnit } from '@/src/types/narrative';
 
 // On importe toutes nos scènes (chaque scène est un tableau d'unités)
 import { scene1 } from './chapters/chapter-1/scene-1';
-import { scene2 } from './chapters/chapter-1/scene-2'; // Quand tu l'auras créée
-// import { scene3 } from './chapter-1/scene-3';
+import { scene2 } from './chapters/chapter-1/scene-2';
+import { scene3 } from './chapters/chapter-1/scene-3';
 
 // On fusionne toutes les scènes du Chapitre 1 dans un seul grand tableau
 const chapter1Units = [
   ...scene1,
   ...scene2,
-  // ...scene3,
+  ...scene3,
 ];
 
 // Le registre global

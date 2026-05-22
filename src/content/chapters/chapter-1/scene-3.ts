@@ -1,23 +1,24 @@
 import type { NarrativeUnit } from "@/src/types/narrative";
 
-export const scene2: NarrativeUnit[] = [
+export const scene3: NarrativeUnit[] = [
   {
-    id: "ch1-s02-u01",
+    id: "ch1-s03-u01",
     chapterId: "chapter-1",
     chapterNumber: 1,
-    unitNumber: "1.2.1",
-    title: "LA ROTONDE",
-    location: "Le Bar",
-    timeLabel: "19:15",
-    imagePrompt: "Thomas_Bar",
+    unitNumber: "1.3.1",
+    title: "LA NUIT",
+    location: "Bureau Thomas",
+    timeLabel: "23:48",
+    imagePrompt: "Thomas_Bureau_Nuit",
     accessLevel: "public",
     countdownVisible: false,
     textBlocks: [
-      "La Rotonde était bruyante, chaude, saturée d'odeurs de bière renversée et de friture. Samir était déjà là, installé au fond de la salle, une pinte à moitié pleine devant lui. Il n'avait pas enlevé son manteau.",
-      "Thomas s'est assis en face sans dire un mot. Il a posé son sac sur la banquette. Il a sorti la clé USB, l'a poussée sur la table vernie jusqu'à la buter contre le sous-bock de Samir.",
-      "Samir a regardé la clé, puis Thomas.",
-      "— C'est quoi ?<br>— Regarde, a dit Thomas.",
-      "Samir a soupiré. Il a sorti son propre ordinateur, un modèle durci, lourd, couvert d'autocollants. Il a inséré la clé. L'écran a projeté une lueur bleutée sur son visage fatigué."
+      "Il est 23h48 quand Thomas rallume l’ordinateur.<br/><br/>La maison dort presque. À l’étage, une porte a cessé de bouger depuis longtemps ; dans la cuisine, le lave-vaisselle tourne derrière la cloison avec cette régularité mécanique des appareils qu’on n’entend jamais vraiment avant d’avoir l’esprit occupé ailleurs.",
+      "Il a dit qu’il montait répondre à deux mails. Ce n’était pas tout à fait faux.<br/><br/>Le bureau est étroit, rangé, provisoire comme tous les espaces de travail domestiques qu’on prétend ne pas vraiment habiter.",
+      "Une lampe allumée. Un carnet fermé. Le reflet de l’écran noir dans la vitre.",
+      "Dehors, le quartier est presque immobile.",
+      "Il s’assied sans allumer la grande lumière. Pendant quelques secondes, il reste devant l’écran de connexion, les mains posées à plat sur le bureau, sans taper son mot de passe. La soirée au bar est encore là, non comme un souvenir mais comme une couche supplémentaire sur tout le reste.",
+      "Les phrases de Samir. Les silences. Le chiffre qu’aucun des deux n’avait envie d’écrire. Entre quatre et six mois, peut-être moins.<br/><br/>Il se connecte. Le dossier NW-7 est là où il l’a laissé, sur la partition chiffrée."
     ],
     choices: [
       {

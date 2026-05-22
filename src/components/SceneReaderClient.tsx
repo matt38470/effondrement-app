@@ -1,30 +1,62 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { NarrativeUnit } from '@/src/types/narrative';
-import { useGameStore } from '@/src/store/gameStore';
-import { useEffect } from 'react';
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { NarrativeUnit, Condition } from "@/src/types/narrative"; // !!! importer Condition
+import { useGameStore } from "@/src/store/gameStore";
+import { useEffect } from "react";
 
 export default function SceneReaderClient({ scene }: { scene: NarrativeUnit }) {
   const router = useRouter();
 
- const { applyChoice, addChoiceToHistory, settings } = useGameStore();
- 
+  const { applyChoice, addChoiceToHistory, settings, gauges } = useGameStore();
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, [scene.id]);
 
   const getFontClass = () => {
     switch (settings.fontFamily) {
-      case 'serif': return 'font-serif';
-      case 'mono': return 'font-mono tracking-tight';
-      case 'sans':
-      default: return 'font-sans';
+      case "serif":
+        return "font-serif";
+      case "mono":
+        return "font-mono tracking-tight";
+      case "sans":
+      default:
+        return "font-sans";
     }
+  };
+
+  const checkChoiceConditions = (conditions?: Condition[]): boolean => {
+    if (!conditions || conditions.length === 0) return true;
+
+    return conditions.every((cond) => {
+      const current = (gauges as any)[cond.key];
+
+      switch (cond.operator) {
+        case "eq":
+          return current === cond.value;
+        case "neq":
+          return current !== cond.value;
+        case "gte": {
+          const target =
+            typeof cond.value === "number" ? cond.value : Number(cond.value);
+          return typeof current === "number" && current >= target;
+        }
+        case "lte": {
+          const target =
+            typeof cond.value === "number" ? cond.value : Number(cond.value);
+          return typeof current === "number" && current <= target;
+        }
+        case "includes":
+          return Array.isArray(current) && current.includes(cond.value);
+        default:
+          return true;
+      }
+    });
   };
 
   return (
@@ -66,63 +98,80 @@ export default function SceneReaderClient({ scene }: { scene: NarrativeUnit }) {
           </div>
 
           <div className="flex flex-col gap-4">
-            {scene.choices.map((choice) => (
-              <button
-                key={choice.id}
-               onClick={() => {
-                applyChoice(choice.effects, choice.unlockArchive, choice.id);
+            {scene.choices.map((choice) => {
+              const available = checkChoiceConditions(choice.conditions);
 
-                const updatedGauges = useGameStore.getState().gauges;
+              return (
+                <button
+                  key={choice.id}
+                  disabled={!available}
+                  onClick={() => {
+                    if (!available) return;
 
-                const hasGaugeChange =
-                  !!choice.effects &&
-                  Object.values(choice.effects).some(
-                    (value) => typeof value === 'number' && value !== 0
-                  );
+                    applyChoice(
+                      choice.effects,
+                      choice.unlockArchive,
+                      choice.id
+                    );
 
-                const hasArchiveUnlock = !!choice.unlockArchive;
+                    const updatedGauges = useGameStore.getState().gauges;
 
-                if (hasGaugeChange || hasArchiveUnlock) {
-                  addChoiceToHistory({
-                    choiceId: choice.id,
-                    unitId: scene.id,
-                    chapterNumber: scene.chapterNumber,
-                    unitNumber: scene.unitNumber,
-                    sceneTitle: scene.title,
-                    location: scene.location,
-                    timeLabel: scene.timeLabel,
-                    choiceLabel: choice.label,
-                    otherOptions: scene.choices
-                      .filter((c) => c.id !== choice.id)
-                      .map((c) => c.label),
-                    gaugesSnapshot: updatedGauges,
-                    gaugeChanges: choice.effects,
-                  });
-                }
+                    const hasGaugeChange =
+                      !!choice.effects &&
+                      Object.values(choice.effects).some(
+                        (value) =>
+                          typeof value === "number" && value !== 0
+                      );
 
-                let unitNumberForUrl = choice.nextUnitId;
-                if (choice.nextUnitId.startsWith("ch1-u")) {
-                  const numPart = choice.nextUnitId.split("-u")[1];
-                  const num = parseInt(numPart, 10);
-                  unitNumberForUrl = `1.${num}`;
-                }
+                    const hasArchiveUnlock = !!choice.unlockArchive;
 
-                router.push(`/read/1/${unitNumberForUrl}`);
-              }}
-                className="w-full text-left p-4 bg-gray-100 hover:bg-gray-200 dark:bg-[#1A1A1A] dark:hover:bg-[#252525] border border-gray-300 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-500 rounded-lg transition-all duration-300 group font-sans"
-              >
-                <div className="flex flex-col">
-                  <span className="text-gray-900 dark:text-gray-200 font-medium group-hover:text-black dark:group-hover:text-white transition-colors">
-                    {choice.label}
-                  </span>
-                  {choice.hint && (
-                    <span className="text-xs text-gray-500 dark:text-gray-500 mt-1 italic group-hover:text-gray-700 dark:group-hover:text-gray-400 transition-colors">
-                      {choice.hint}
+                    if (hasGaugeChange || hasArchiveUnlock) {
+                      addChoiceToHistory({
+                        choiceId: choice.id,
+                        unitId: scene.id,
+                        chapterNumber: scene.chapterNumber,
+                        unitNumber: scene.unitNumber,
+                        sceneTitle: scene.title,
+                        location: scene.location,
+                        timeLabel: scene.timeLabel,
+                        choiceLabel: choice.label,
+                        otherOptions: scene.choices
+                          .filter((c) => c.id !== choice.id)
+                          .map((c) => c.label),
+                        gaugesSnapshot: updatedGauges,
+                        gaugeChanges: choice.effects,
+                      });
+                    }
+
+                    let unitNumberForUrl = choice.nextUnitId;
+                    if (choice.nextUnitId.startsWith("ch1-u")) {
+                      const numPart = choice.nextUnitId.split("-u")[1];
+                      const num = parseInt(numPart, 10);
+                      unitNumberForUrl = `1.${num}`;
+                    }
+
+                    router.push(`/read/1/${unitNumberForUrl}`);
+                  }}
+                  className={`w-full text-left p-4 rounded-lg transition-all duration-300 group font-sans
+                    ${
+                      available
+                        ? "bg-orange-500 hover:bg-orange-600 text-white shadow-md border border-orange-600"
+                        : "bg-gray-800 text-gray-400 border border-gray-700 opacity-60 cursor-not-allowed"
+                    }`}
+                >
+                  <div className="flex flex-col">
+                    <span className="font-medium">
+                      {choice.label}
                     </span>
-                  )}
-                </div>
-              </button>
-            ))}
+                    {choice.hint && (
+                      <span className="text-xs mt-1 italic opacity-90">
+                        {choice.hint}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </motion.div>
       </AnimatePresence>
