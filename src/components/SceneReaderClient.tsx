@@ -2,21 +2,46 @@
 
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { NarrativeUnit, Condition } from "@/src/types/narrative"; // !!! importer Condition
+import { NarrativeUnit, Condition } from "@/src/types/narrative";
 import { useGameStore } from "@/src/store/gameStore";
 import { useEffect } from "react";
 
 export default function SceneReaderClient({ scene }: { scene: NarrativeUnit }) {
   const router = useRouter();
 
-  const { applyChoice, addChoiceToHistory, settings, gauges } = useGameStore();
+  const {
+    applyChoice,
+    addChoiceToHistory,
+    addArchives,
+    addCharacters,
+    settings,
+    gauges,
+    setCurrentUnitId,
+    chosenPathByUnit,
+    setChosenPath,
+  } = useGameStore();
 
   useEffect(() => {
+    const unlockArchives = scene.deskUpdate?.unlockArchives ?? [];
+    const unlockCharacters = (scene.deskUpdate?.unlockCharacters ?? []).map((c) => c.id);
+
+    if (unlockArchives.length > 0) {
+      addArchives(unlockArchives);
+    }
+
+    if (unlockCharacters.length > 0) {
+      addCharacters(unlockCharacters);
+    }
+  }, [scene.id, scene.deskUpdate, addArchives, addCharacters]);
+
+  useEffect(() => {
+    setCurrentUnitId(scene.unitNumber);
+
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  }, [scene.id]);
+  }, [scene.id, scene.unitNumber, setCurrentUnitId]);
 
   const getFontClass = () => {
     switch (settings.fontFamily) {
@@ -59,122 +84,144 @@ export default function SceneReaderClient({ scene }: { scene: NarrativeUnit }) {
     });
   };
 
-  return (
-    <main
-      className={`max-w-2xl mx-auto p-6 md:p-8 mt-6 ${getFontClass()}`}
-      style={{ fontSize: `${settings.fontSize}px`, lineHeight: 1.8 }}
-    >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={scene.id}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -15 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          {scene.imagePrompt && scene.imagePrompt !== "None" && (
-            <div className="w-full mb-8 overflow-hidden rounded-xl shadow-md border border-gray-100 dark:border-gray-800">
-              <img
-                src={`/images/${scene.imagePrompt}.jpg`}
-                alt={scene.title}
-                className="w-full object-cover max-h-64 md:max-h-80 opacity-90 transition-opacity hover:opacity-100 duration-500"
-              />
-            </div>
-          )}
+  const resolveNextUnitUrl = (nextUnitId: string) => {
+    if (nextUnitId.startsWith("ch1-u")) {
+      const numPart = nextUnitId.split("-u")[1];
+      const num = parseInt(numPart, 10);
+      return `/read/${scene.chapterNumber}/1.${num}`;
+    }
 
-          <div className="flex justify-between items-end mb-6">
-            <h1 className="text-sm font-bold text-orange-600 uppercase tracking-widest font-sans">
+    return `/read/${scene.chapterNumber}/${nextUnitId}`;
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={scene.id}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -15 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className={getFontClass()}
+      >
+        {scene.imagePrompt && scene.imagePrompt !== "None" && (
+          <div className="mb-8 overflow-hidden rounded-2xl border border-black/10 bg-white/40 shadow-md dark:border-white/10 dark:bg-white/[0.03]">
+            <img
+              src={`/images/scenes/${scene.imagePrompt}.jpg`}
+              alt={scene.title}
+              className="max-h-80 w-full object-cover"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        )}
+
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-orange-700 dark:text-orange-400">
+              {scene.location ?? "Incident NW-7"}
+            </p>
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
               {scene.title}
             </h1>
-            <span className="text-xs font-mono text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded">
+          </div>
+
+          {scene.timeLabel && (
+            <span className="rounded-full border border-black/10 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-neutral-500 dark:border-white/10 dark:text-neutral-400">
               {scene.timeLabel}
             </span>
-          </div>
+          )}
+        </div>
 
-          <div className="leading-relaxed mb-12 space-y-6 text-gray-900 dark:text-gray-200">
-            {scene.textBlocks.map((block, idx) => (
-              <div key={idx} dangerouslySetInnerHTML={{ __html: block }} />
-            ))}
-          </div>
+        <div className="mb-12 space-y-6 text-neutral-800 dark:text-neutral-200">
+          {scene.textBlocks.map((block, idx) => (
+            <div key={idx} dangerouslySetInnerHTML={{ __html: block }} />
+          ))}
+        </div>
 
-          <div className="flex flex-col gap-4">
-            {scene.choices.map((choice) => {
-              const available = checkChoiceConditions(choice.conditions);
+        <div className="flex flex-col gap-4">
+          {scene.choices.map((choice) => {
+            const available = checkChoiceConditions(choice.conditions);
+            const lockedChoiceId = chosenPathByUnit[scene.id];
+            const sceneAlreadyResolved = !!lockedChoiceId;
+            const alreadyChosen = lockedChoiceId === choice.id;
+            const disabled = !available || (sceneAlreadyResolved && !alreadyChosen);
 
-              return (
-                <button
-                  key={choice.id}
-                  disabled={!available}
-                  onClick={() => {
-                    if (!available) return;
+            return (
+              <button
+                key={choice.id}
+                type="button"
+                disabled={disabled}
+                onClick={() => {
+                  if (disabled) return;
 
-                    applyChoice(
-                      choice.effects,
-                      choice.unlockArchive,
-                      choice.id
+                  if (sceneAlreadyResolved) {
+                    if (alreadyChosen) {
+                      router.replace(resolveNextUnitUrl(choice.nextUnitId));
+                    }
+                    return;
+                  }
+
+                  applyChoice(choice.effects, choice.unlockArchive, choice.id);
+                  setChosenPath(scene.id, choice.id);
+
+                  const state = useGameStore.getState();
+
+                  const hasGaugeChange =
+                    !!choice.effects &&
+                    Object.values(choice.effects).some(
+                      (value) => typeof value === "number" && value !== 0
                     );
 
-                    const updatedGauges = useGameStore.getState().gauges;
+                  const hasArchiveUnlock = !!choice.unlockArchive;
 
-                    const hasGaugeChange =
-                      !!choice.effects &&
-                      Object.values(choice.effects).some(
-                        (value) =>
-                          typeof value === "number" && value !== 0
-                      );
+                  if (hasGaugeChange || hasArchiveUnlock) {
+                    addChoiceToHistory({
+                      choiceId: choice.id,
+                      unitId: scene.id,
+                      chapterNumber: scene.chapterNumber,
+                      unitNumber: scene.unitNumber,
+                      sceneTitle: scene.title,
+                      location: scene.location,
+                      timeLabel: scene.timeLabel,
+                      choiceLabel: choice.label,
+                      otherOptions: scene.choices
+                        .filter((c) => c.id !== choice.id)
+                        .map((c) => c.label),
+                      gaugesSnapshot: state.gauges,
+                      gaugeChanges: choice.effects,
+                      mentalStateSnapshot: state.mentalState,
+                    });
+                  }
 
-                    const hasArchiveUnlock = !!choice.unlockArchive;
+                  router.replace(resolveNextUnitUrl(choice.nextUnitId));
+                }}
+                className={`w-full rounded-2xl border p-4 text-left transition-all duration-300 ${
+                  alreadyChosen
+                    ? "border-emerald-500/40 bg-emerald-600 text-white shadow-md"
+                    : !disabled
+                    ? "border-orange-500/40 bg-orange-500 text-white shadow-md hover:bg-orange-600"
+                    : "cursor-not-allowed border-white/10 bg-neutral-800 text-neutral-400 opacity-60"
+                }`}
+              >
+                <div className="flex flex-col">
+                  <span className="font-medium">{choice.label}</span>
 
-                    if (hasGaugeChange || hasArchiveUnlock) {
-                      addChoiceToHistory({
-                        choiceId: choice.id,
-                        unitId: scene.id,
-                        chapterNumber: scene.chapterNumber,
-                        unitNumber: scene.unitNumber,
-                        sceneTitle: scene.title,
-                        location: scene.location,
-                        timeLabel: scene.timeLabel,
-                        choiceLabel: choice.label,
-                        otherOptions: scene.choices
-                          .filter((c) => c.id !== choice.id)
-                          .map((c) => c.label),
-                        gaugesSnapshot: updatedGauges,
-                        gaugeChanges: choice.effects,
-                      });
-                    }
-
-                    let unitNumberForUrl = choice.nextUnitId;
-                    if (choice.nextUnitId.startsWith("ch1-u")) {
-                      const numPart = choice.nextUnitId.split("-u")[1];
-                      const num = parseInt(numPart, 10);
-                      unitNumberForUrl = `1.${num}`;
-                    }
-
-                    router.push(`/read/1/${unitNumberForUrl}`);
-                  }}
-                  className={`w-full text-left p-4 rounded-lg transition-all duration-300 group font-sans
-                    ${
-                      available
-                        ? "bg-orange-500 hover:bg-orange-600 text-white shadow-md border border-orange-600"
-                        : "bg-gray-800 text-gray-400 border border-gray-700 opacity-60 cursor-not-allowed"
-                    }`}
-                >
-                  <div className="flex flex-col">
-                    <span className="font-medium">
-                      {choice.label}
+                  {alreadyChosen ? (
+                    <span className="mt-1 text-xs italic opacity-90">
+                      Choix déjà validé
                     </span>
-                    {choice.hint && (
-                      <span className="text-xs mt-1 italic opacity-90">
-                        {choice.hint}
-                      </span>
-                    )}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </motion.div>
-      </AnimatePresence>
-    </main>
+                  ) : choice.hint ? (
+                    <span className="mt-1 text-xs italic opacity-90">
+                      {choice.hint}
+                    </span>
+                  ) : null}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

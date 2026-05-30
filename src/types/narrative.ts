@@ -1,12 +1,31 @@
 import type { AccessLevel, EntitlementKey } from "./access";
 
+export type GaugeKey =
+  | "alerte"
+  | "charge"
+  | "integrite"
+  | "preparation"
+  | "cohesion"
+  | "discretion";
+
+export interface GaugeEffects {
+  alerte?: number;
+  charge?: number;
+  integrite?: number;
+  preparation?: number;
+  discretion?: number;
+  cohesion?: number;
+}
+
 export type StateEffect = {
-  key: "fatigue" | "preparation" | "isolement" | "paranoia"; // Ajoute tes propres jauges ici
-  delta: number; // ex: +1 ou -1
+  key: GaugeKey;
+  delta: number;
 };
 
+export type ConditionKey = GaugeKey | "mentalState";
+
 export type Condition = {
-  key: string;
+  key: ConditionKey;
   operator: "eq" | "neq" | "gte" | "lte" | "includes";
   value: string | number | boolean;
 };
@@ -16,15 +35,36 @@ export type Unlock = {
   id: string;
 };
 
+export interface DeskJournalEntry {
+  summary: string;
+  tone?: "lucid" | "anxious" | "cold" | "focused";
+  tags?: string[];
+}
+
+export interface DeskCharacterUnlock {
+  id: string;
+  note?: string;
+}
+
+export interface DeskUpdate {
+  systemNotes?: string[];
+  journalEntry?: DeskJournalEntry;
+  unlockArchives?: string[];
+  unlockCharacters?: DeskCharacterUnlock[];
+}
+
 export type NarrativeChoice = {
   id: string;
   label: string;
   hint?: string;
   nextUnitId: string;
-  effects?: GaugeEffects;     // <-- On utilise notre système simple de jauges
+  effects?: GaugeEffects;
   conditions?: Condition[];
-  unlockArchive?: string;  
-}
+  unlockArchive?: string;
+  journalNote?: string;
+  systemNote?: string;
+  unlockCharacterId?: string;
+};
 
 export type NarrativeUnit = {
   id: string;
@@ -38,9 +78,10 @@ export type NarrativeUnit = {
   countdownVisible: boolean;
   countdownLabel?: string;
   textBlocks: string[];
-  imagePrompt?: string;    
+  imagePrompt?: string;
   choices: NarrativeChoice[];
   unlocks?: Unlock[];
+  deskUpdate?: DeskUpdate;
 };
 
 export type Chapter = {
@@ -52,13 +93,3 @@ export type Chapter = {
   teaser?: string;
   unitIds: string[];
 };
-
-export interface GaugeEffects {
-  alerte?: number;
-  charge?: number;
-  integrite?: number;
-  preparation?: number;
-  discretion?: number;
-  cohesion?: number;
-}
-

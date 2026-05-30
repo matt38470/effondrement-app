@@ -1,37 +1,35 @@
 @import "tailwindcss";
 
-/* === 1. CONFIGURATION DU MODE SOMBRE POUR TAILWIND v4 === */
-/* Cette ligne est CRUCIALE pour que next-themes active les classes "dark:..." */
 @variant dark (&:where(.dark, .dark *));
 
-
-/* === 2. VARIABLES GLOBALES === */
-/* Mode Clair */
 :root {
-  --background: #F9FAFB;
+  --background: #f9fafb;
   --foreground: #111827;
+  color-scheme: light;
 }
 
-/* Mode Sombre */
-:root.dark {
+html.dark {
   --background: #0a0a0a;
   --foreground: #e5e7eb;
+  color-scheme: dark;
 }
 
-
-/* === 3. INJECTION DANS TAILWIND === */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-merriweather);
 }
 
-
-/* === 4. STYLES DE BASE === */
 @layer base {
+  html,
   body {
+    min-height: 100%;
     background-color: var(--background);
     color: var(--foreground);
-    /* Transition fluide lors du clic sur le bouton clair/sombre */
-    transition: background-color 0.3s ease, color 0.3s ease; 
+  }
+
+  body {
+    font-family: var(--font-inter), sans-serif;
   }
 }
